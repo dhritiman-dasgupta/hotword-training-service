@@ -1,0 +1,19 @@
+# secrets / private keys — NEVER commit
+deploy/hotword-key.pem
+deploy/api_key.txt
+
+# instance-specific state / ids
+deploy/instance-id.txt
+deploy/eip.txt
+deploy/eip-alloc.txt
+deploy/test-job.txt
+deploy/demo-job.txt
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+
+# os
+Thumbs.db
+.DS_Store

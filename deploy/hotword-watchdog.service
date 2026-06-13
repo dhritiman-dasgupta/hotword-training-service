@@ -1,0 +1,17 @@
+[Unit]
+Description=Hotword idle auto-shutdown watchdog
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/opt/hotword/server
+ExecStart=/opt/hotword/venvs/api/bin/python /opt/hotword/server/watchdog.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+Environment=IDLE_TIMEOUT_SECONDS=300
+Environment=BOOT_GRACE_SECONDS=300
+
+[Install]
+WantedBy=multi-user.target
