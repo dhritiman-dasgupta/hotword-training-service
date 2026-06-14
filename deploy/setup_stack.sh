@@ -13,7 +13,9 @@ echo "[setup] torch cu121 (train)"
 pip install -q torch torchaudio --index-url https://download.pytorch.org/whl/cu121
 echo "[setup] openwakeword + training deps"
 pip install -q openwakeword
-pip install -q "speechbrain==0.5.16" torchinfo torchmetrics audiomentations torch-audiomentations mutagen acoustics pronouncing "datasets==2.14.6" onnx pyyaml tqdm scipy scikit-learn
+pip install -q "speechbrain==0.5.16" torchinfo torchmetrics audiomentations torch-audiomentations mutagen acoustics pronouncing "datasets==2.14.6" "deep-phonemizer==0.0.19" onnx pyyaml tqdm scipy scikit-learn
+# deep-phonemizer (module `dp`) is required by generate_adversarial_texts for words not in
+# the CMU pronunciation dictionary (e.g. uncommon names). Without it generation crashes.
 echo "[setup] piper fork deps"
 pip install -q espeak-phonemizer webrtcvad
 echo "[setup] downloading oww pretrained feature models"
