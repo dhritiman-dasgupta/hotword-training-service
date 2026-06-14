@@ -1,6 +1,7 @@
 # secrets / private keys — NEVER commit
 deploy/hotword-key.pem
 deploy/api_key.txt
+API_DOCS_WITH_KEY.md
 
 # instance-specific state / ids
 deploy/instance-id.txt
