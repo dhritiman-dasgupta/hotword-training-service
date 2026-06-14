@@ -9,6 +9,8 @@ detector fully offline on any mic.
 
 > **In one line:** `POST /train {"wake_word": "..."}` → wait → `GET /jobs/<id>/model` → `your_word.onnx`
 
+📖 **Full API reference (generate + inference):** see [`API_DOCS.md`](API_DOCS.md).
+
 A pre-trained demo model (`models/hey_kiki.onnx`) is included.
 
 ---

@@ -8,6 +8,19 @@ deploy/eip.txt
 deploy/eip-alloc.txt
 deploy/test-job.txt
 deploy/demo-job.txt
+deploy/web-instance-id.txt
+deploy/web-eip.txt
+deploy/web-eip-alloc.txt
+deploy/web-sg.txt
+
+# verification harness deps/artifacts (source kept, node_modules/artifacts ignored)
+web-verify/node_modules/
+web-verify/package-lock.json
+web-verify/clip16k.wav
+web-verify/ref_scores.json
+
+# browser app has its own public repo (github.com/dhritiman-dasgupta/hey-kiki-wakeword-web)
+web/
 
 # python
 __pycache__/
