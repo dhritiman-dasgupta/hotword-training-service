@@ -9,20 +9,22 @@ Two parts:
 
 # Part 1 — Training API (generate the ONNX)
 
-**Base URL:** `http://13.200.68.170:8000`
+**Base URL:** `https://65-2-7-128.sslip.io/api`  (always-on gateway, HTTPS)
 **Auth:** every request needs header `X-API-Key: <key>`
-The key lives in `deploy/api_key.txt` (and `/opt/hotword/state/api_key` on the box).
-**Interactive docs (OpenAPI/Swagger):** `http://13.200.68.170:8000/docs`
+The key lives in `deploy/api_key.txt`.
+**Interactive docs (OpenAPI/Swagger):** `https://65-2-7-128.sslip.io/api/docs`
 
-### Instance lifecycle (important)
-The training server is a GPU spot instance that **auto-stops after 5 minutes idle** to
-save cost. While stopped, the API is unreachable. Start it before a batch of calls:
+### Power management (automatic — you don't start/stop anything)
+The base URL is an always-on gateway (small t3.micro). The GPU instance is **off** by
+default. When you `POST /train`, the gateway **boots the GPU automatically**, runs the job,
+caches the result, then **shuts the GPU down** once no jobs remain. Just call the API.
 
-```bash
-aws ec2 start-instances --instance-ids i-089730e889eb1fb3d --region ap-south-1
-# wait ~40s for boot, then GET /health until it responds
-```
-It will stop itself again once idle. It never stops while a job is queued/running.
+- The first `/train` after the GPU has been idle takes **~90–150 s extra** while it boots.
+- `/jobs/{id}` and `/jobs/{id}/model` are served from the gateway's cache **even after the
+  GPU is powered off** — so polling and downloads never wake the GPU unnecessarily.
+- `POST /gpu/stop` forces the GPU off immediately (no-op if a job is running).
+- **Direct/advanced:** `http://13.200.68.170:8000` talks straight to the GPU box, but is only
+  reachable while it happens to be running. Prefer the gateway.
 
 ---
 
@@ -30,7 +32,7 @@ It will stop itself again once idle. It never stops while a job is queued/runnin
 
 ```bash
 KEY=<your-api-key>
-BASE=http://13.200.68.170:8000
+BASE=https://65-2-7-128.sslip.io/api
 
 # 1. submit a wake word
 JOB=$(curl -s -X POST $BASE/train \
@@ -81,7 +83,7 @@ Queue a training job. Body is JSON.
 **Example — Python**
 ```python
 import requests, time
-BASE="http://13.200.68.170:8000"; H={"X-API-Key":"<key>"}
+BASE="https://65-2-7-128.sslip.io/api"; H={"X-API-Key":"<key>"}
 jid = requests.post(f"{BASE}/train", headers=H,
                     json={"wake_word":"hey kiki","n_samples":20000,"steps":50000}).json()["job_id"]
 while requests.get(f"{BASE}/jobs/{jid}", headers=H).json()["state"] == "running":
@@ -91,7 +93,7 @@ open("hey_kiki.onnx","wb").write(requests.get(f"{BASE}/jobs/{jid}/model", header
 
 **Example — JavaScript (fetch)**
 ```js
-const BASE="http://13.200.68.170:8000", H={"X-API-Key":"<key>","Content-Type":"application/json"};
+const BASE="https://65-2-7-128.sslip.io/api", H={"X-API-Key":"<key>","Content-Type":"application/json"};
 const { job_id } = await (await fetch(`${BASE}/train`,{method:"POST",headers:H,
   body:JSON.stringify({wake_word:"hey kiki"})})).json();
 let s; do { await new Promise(r=>setTimeout(r,15000));
