@@ -6,6 +6,6 @@
       "Resource": "*" },
     { "Effect": "Allow",
       "Action": ["ec2:StartInstances", "ec2:StopInstances"],
-      "Resource": "arn:aws:ec2:ap-south-1:975050336741:instance/i-089730e889eb1fb3d" }
+      "Resource": "arn:aws:ec2:ap-south-1:<AWS_ACCOUNT_ID>:instance/<EC2_INSTANCE_ID>" }
   ]
 }

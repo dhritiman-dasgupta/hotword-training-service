@@ -23,7 +23,7 @@ caches the result, then **shuts the GPU down** once no jobs remain. Just call th
 - `/jobs/{id}` and `/jobs/{id}/model` are served from the gateway's cache **even after the
   GPU is powered off** — so polling and downloads never wake the GPU unnecessarily.
 - `POST /gpu/stop` forces the GPU off immediately (no-op if a job is running).
-- **Direct/advanced:** `http://13.200.68.170:8000` talks straight to the GPU box, but is only
+- **Direct/advanced:** `http://<GPU_HOST>:8000` talks straight to the GPU box, but is only
   reachable while it happens to be running. Prefer the gateway.
 
 ---

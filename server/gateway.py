@@ -21,8 +21,8 @@ from fastapi.responses import FileResponse, PlainTextResponse
 from pydantic import BaseModel
 
 REGION = "ap-south-1"
-GPU_INSTANCE = "i-089730e889eb1fb3d"
-GPU_API = "http://13.200.68.170:8000"
+GPU_INSTANCE = os.environ.get("GPU_INSTANCE_ID", "<EC2_INSTANCE_ID>")
+GPU_API = os.environ.get("GPU_API", "http://<GPU_HOST>:8000")
 CACHE = "/opt/gateway/cache"
 os.makedirs(CACHE, exist_ok=True)
 

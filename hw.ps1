@@ -23,8 +23,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 $REGION   = "ap-south-1"
-$INSTANCE = "i-089730e889eb1fb3d"
-$EIP      = "13.200.68.170"
+# Set these for your own AWS account before use.
+$INSTANCE = if ($env:GPU_INSTANCE_ID) { $env:GPU_INSTANCE_ID } else { "<EC2_INSTANCE_ID>" }
+$EIP      = if ($env:GPU_HOST)        { $env:GPU_HOST }        else { "<GPU_HOST>" }
 $PEM      = "$PSScriptRoot\deploy\hotword-key.pem"
 $BASE     = "http://${EIP}:8000"
 $KEYFILE  = "$PSScriptRoot\deploy\api_key.txt"
